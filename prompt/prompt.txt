@@ -1,0 +1,96 @@
+Create a premium personal portfolio website for a professional event host (MC/Emcee) with a luxurious black and gold theme. The design should feel classy, elegant, and cinematic, reflecting the energy of live events. Use smooth scroll animations, subtle gold hover effects, and clean modern typography. The website must be responsive and visually engaging but not overly complicated.
+
+Use images and videos from the provided local folder in this directorery. The file names indicate where each image should be used, so place them accordingly in the correct sections. Optimize media display for performance while maintaining high visual quality. I have shared videos as YT links so that it should be easy to view them without much load on performance, add those videos to gallery section
+
+Website structure and sections:
+
+1. Header / Navigation Create a clean top navigation bar with links to: Home, About, Services, Gallery, Clients, Testimonials, Contact/Booking.
+Use a black background with subtle gold accents and smooth hover effects. Add my logo also here at relevant place
+
+2. Cinematic Hero Section Create a strong first impression using a background event phtoto/video from the folder showing stage hosting or audience energy.
+Overlay elegant text:
+
+Headline:
+- Decide a nice and catchy deadline for a professional Emcee/host like Elevate your next event 
+
+Subheadline:
+Professional Event Host | Corporate Events | Weddings | Live Shows
+
+Add two buttons: Watch Showreel
+Book Now
+
+Use smooth fade-in animation and gold hover glow effects.
+
+3. About Me Section Include a short professional introduction about the host, focusing on: stage presence, audience engagement, event experience, and multilingual hosting.
+Display a profile image from the media folder with elegant layout and subtle animation.
+
+4. Services Section Create animated service cards for: Corporate Events
+Weddings & Sangeet
+Team Building Events
+Award Ceremonies
+College Festivals
+Brand Launches
+
+Each card should have simple icons, short descriptions, and gold hover highlights.
+
+5. Event Gallery Section Create a modern grid gallery using the images provided in the folder.
+When a user clicks an image, open it in a lightbox view.
+Include support for short video clips from events in this section as well. I w
+
+6. Clients Section Display logos or images representing brands, organizations, or events hosted.
+Use a scrolling or grid layout with subtle animation.
+
+7. Testimonials Section Create a carousel slider for client feedback.
+Each testimonial should appear with smooth transition animation. I willl add yt links of testimonials shortly, ask me about about it in a while, as I am uploading them to yt now
+
+8. Achievements / Highlights Section Include animated counters such as: Number of Events Hosted
+Happy Clients - Google
+HDFC Bank
+Vested Finance
+Hettich
+Schneider Electric
+MSN Labs
+Novartis
+Indian Oil Petroleum
+Osmania University
+Telangana Mahila Vishwavidyalayam
+Safar Organization
+Youngistan Foundation
+La Mintage Legal Dispute
+
+Try scra[ing the client logs and add them to website 
+Cities Performed In
+Years of Experience - 3
+
+Numbers should animate when scrolling into view.
+
+9. Contact / Booking Section (Final Section) Create a booking form to collect event inquiries with fields for: Name
+Email - 
+Phone - 
+Event Type
+Event Date
+Event Time
+Event Location
+Message
+
+my contact details should be in about me:
+Email - barthwalkiran58@gmail.com
+Phone - 8328386380
+https://www.linkedin.com/in/kiran-barthwal
+
+Style this section with premium gold borders or glow effects referr colours in brand logo.
+
+Technical instructions:
+
+Use HTML, CSS, and JavaScript
+
+Ensure clean, organized code structure
+
+Implement smooth scrolling and lightweight animations
+
+Make the website fully responsive for mobile, tablet, and desktop
+
+Ensure images and videos from the provided folder are clearly mapped to their respective sections based on file names
+
+
+Overall goal: Build a visually striking, premium black-and-gold animated portfolio website for an event host, showcasing event images, videos, client credibility, and an easy booking experience while maintaining a clean, modern, and elegant layout.
