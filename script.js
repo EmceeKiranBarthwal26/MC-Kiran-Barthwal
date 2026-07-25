@@ -4,14 +4,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
     // =========================================
-    // CINEMATIC ASSEMBLY PRELOADER SEQUENCE
+    // LAYERED GSAP PRELOADER ASSEMBLY FLOW
     // =========================================
     const preloader = document.getElementById('preloader');
     const preloaderBackdrop = document.querySelector('.preloader-backdrop');
-    const preloaderGlow = document.querySelector('.preloader-glow');
+    const preloaderGlow = document.getElementById('preloaderGlow');
+    const preloaderSunflowerBloom = document.getElementById('preloaderSunflowerBloom');
     const preloaderAssembly = document.getElementById('preloaderAssembly');
-    const preloaderMic = document.querySelector('.preloader-mic') || document.querySelector('.preloader-fallback-mic');
-    const preloaderTextGroup = document.getElementById('preloaderTextGroup');
+    const preloaderMic = document.getElementById('preloaderMic');
+    const preloaderKB = document.getElementById('preloaderKB');
+    const preloaderTextBlock = document.getElementById('preloaderTextBlock');
 
     if (preloader && typeof gsap !== 'undefined') {
         const tl = gsap.timeline({
@@ -21,63 +23,69 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // 1. Initial Scene Setup: Mic off-screen (bottom-left)
-        gsap.set(preloaderMic, {
-            x: '-100vw',
-            y: '50vh',
-            rotation: -45,
-            opacity: 0.8
-        });
-        if (preloaderTextGroup) {
-            gsap.set(preloaderTextGroup.children, {
-                opacity: 0,
-                y: 20
-            });
-        }
-        gsap.set(preloaderGlow, {
-            opacity: 0,
-            scale: 0.2
-        });
+        // Step 1 — Initial Positioning:
+        // Center KB monogram (opacity: 0, scale: 0.9)
+        // Position Mic off-screen to left (x: '-60vw', opacity: 0)
+        gsap.set(preloaderKB, { opacity: 0, scale: 0.9 });
+        gsap.set(preloaderMic, { x: '-60vw', opacity: 0, rotation: -25 });
+        gsap.set(preloaderTextBlock, { opacity: 0, y: 25 });
+        gsap.set(preloaderSunflowerBloom, { scale: 0.2, opacity: 0 });
+        gsap.set(preloaderGlow, { opacity: 0, scale: 0.3 });
 
-        // 2. Gold Microphone Glide In
+        // Step 2 — Mic Entry & Positioning:
+        // Slide mic from -60vw to target position (1.2s, power4.out)
+        // Simultaneously fade in KB monogram (opacity: 1, scale: 1)
         tl.to(preloaderMic, {
             x: 0,
-            y: 0,
+            opacity: 1,
             rotation: 0,
-            duration: 1.15,
-            ease: 'power3.out'
+            duration: 1.25,
+            ease: 'power4.out'
         });
 
-        // 3. Golden Bloom Flare Pulse
-        tl.to(preloaderGlow, {
-            opacity: 0.95,
-            scale: 1.4,
-            duration: 0.7,
-            ease: 'back.out(1.7)'
-        }, "-=0.3");
-
-        tl.to(preloaderGlow, {
-            opacity: 0.4,
+        tl.to(preloaderKB, {
+            opacity: 1,
             scale: 1,
+            duration: 0.8,
+            ease: 'power3.out'
+        }, "-=0.95");
+
+        // Step 3 — Merge & Sunflower Bloom Effect:
+        // Trigger Sunflower Bloom (scale 0.2 to 1.4, opacity fade) + gold glow flash
+        tl.to(preloaderSunflowerBloom, {
+            scale: 1.4,
+            opacity: 0.45,
+            duration: 0.65,
+            ease: 'back.out(1.7)'
+        }, "-=0.25");
+
+        tl.to(preloaderGlow, {
+            opacity: 0.9,
+            scale: 1.3,
             duration: 0.5,
-            ease: 'power2.inOut'
+            ease: 'power2.out'
+        }, "<");
+
+        tl.to([preloaderSunflowerBloom, preloaderGlow], {
+            opacity: 0,
+            scale: 1.8,
+            duration: 0.55,
+            ease: 'power2.in'
         });
 
-        // 4. Stagger Character & Text Reveal
-        if (preloaderTextGroup) {
-            tl.to(preloaderTextGroup.children, {
-                opacity: 1,
-                y: 0,
-                duration: 0.6,
-                stagger: 0.12,
-                ease: 'power3.out'
-            }, "-=0.6");
-        }
+        // Step 4 — Tagline Reveal & Morph Transition:
+        // Fade in "MC KIRAN BARTHWAL" & "HOSTING YOUR NEXT MEMORY"
+        tl.to(preloaderTextBlock, {
+            opacity: 1,
+            y: 0,
+            duration: 0.65,
+            ease: 'power3.out'
+        }, "-=0.35");
 
         // Brief Cinematic Hold
-        tl.to({}, { duration: 0.35 });
+        tl.to({}, { duration: 0.4 });
 
-        // 5. Header Morph & Backdrop Uncurtain
+        // Morph Scale to Top-Left & Backdrop Uncurtain
         tl.to(preloaderBackdrop, {
             clipPath: 'inset(0% 0% 100% 0%)',
             duration: 0.95,
@@ -85,8 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         tl.to(preloaderAssembly, {
-            scale: 0.3,
-            y: '-40vh',
+            scale: 0.25,
+            y: '-42vh',
+            x: '-10vw',
             opacity: 0,
             duration: 0.9,
             ease: 'power4.inOut'
