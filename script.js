@@ -23,102 +23,120 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // --- Phase 1: Initial State & Mic Gliding ---
-        // KB Monogram pre-positioned at center screen (opacity: 1, scale: 1)
-        // Mic glides smoothly from off-screen left (x: '-70vw', opacity: 0)
-        gsap.set(preloaderKBImg, { opacity: 1, scale: 1 });
+        // --- Step 1: Initial State ---
+        gsap.set(preloaderKBImg, { opacity: 0, scale: 0.85 });
         gsap.set(preloaderMicImg, { x: '-70vw', opacity: 0 });
-        gsap.set(preloaderTextGroup, { opacity: 0, y: 15 });
+        gsap.set(preloaderTextGroup, { opacity: 0, y: 25 });
         gsap.set(preloaderSunflowerAura, { scale: 0.5, opacity: 0 });
-        gsap.set(preloaderGlow, { opacity: 0, scale: 0.3 });
 
-        // Glide Mic.png along X-axis to docking position (x: 0, 1.6s, power3.out)
+        // --- Step 2: Heartbeat Awakening of KB Monogram ---
+        // Slowly comes to life with a gentle, breathing pulse (1.8s)
+        tl.to(preloaderKBImg, {
+            opacity: 1,
+            scale: 1.08,
+            duration: 1.2,
+            ease: 'power1.inOut'
+        });
+        tl.to(preloaderKBImg, {
+            scale: 1.0,
+            duration: 0.6,
+            ease: 'power1.inOut'
+        });
+
+        // --- Step 3: Golden Microphone Glide & Docking ---
+        // Mic glides smoothly from left (-70vw to 0, 1.8s) docking flush against 'K' stem
         tl.to(preloaderMicImg, {
             x: 0,
             opacity: 1,
-            duration: 1.6,
+            duration: 1.8,
             ease: 'power3.out'
-        });
+        }, "-=0.4");
 
-        // --- Phase 2: Docking Merge & Sunflower Aura Bloom ---
-        // At exact millisecond Mic.png docks against 'K':
-        // 1. Gold drop-shadow impact on mic & monogram
-        // 2. Reveal tagline text ("MC KIRAN BARTHWAL" & "HOSTING YOUR NEXT MEMORY", 0.6s)
-        // 3. Sunflower Bloom expands outward (scale 0.5 -> 1.35, opacity 0 -> 0.55, 0.85s, power2.out)
+        // Gold drop-shadow impact on docking
         tl.to([preloaderMicImg, preloaderKBImg], {
             filter: 'drop-shadow(0 0 35px rgba(212, 175, 55, 0.85))',
-            duration: 0.4
+            duration: 0.5
         });
 
+        // --- Step 4: Text Unfold from Below ---
+        // "MC KIRAN BARTHWAL" + gold line + "HOSTING YOUR NEXT MEMORY" rise gently from below (1.2s)
         tl.to(preloaderTextGroup, {
             opacity: 1,
             y: 0,
-            duration: 0.6,
+            duration: 1.2,
             ease: 'power2.out'
-        }, "<");
+        });
 
+        // --- Step 5: Sunflower Aura Expansion ---
+        // After text is revealed, sunflower aura blooms slowly in background (1.5s)
         tl.to(preloaderSunflowerAura, {
             scale: 1.35,
-            opacity: 0.55,
-            duration: 0.85,
+            opacity: 0.6,
+            duration: 1.5,
             ease: 'power2.out'
-        }, "<");
+        }, "-=0.6");
 
-        // --- Cinematic Hold Pause ---
-        // Hold full assembled composition comfortably on screen so user feels the luxury
-        tl.to({}, { duration: 1.2 });
+        // --- Step 6: Cinematic Pause Hold ---
+        // Hold full assembled emblem comfortably so luxury event host aesthetic is felt (1.5s hold)
+        tl.to({}, { duration: 1.5 });
 
-        // --- Phase 3: Morph Sunflower into Persistent Background Watermark & Header Morph ---
-        // Sunflower Morph: scale down from 1.35 to 1.0, fade opacity from 0.55 to 0.04 (matching background watermark!)
+        // --- Step 7: Morph Sunflower into Watermark & Header Morph ---
+        // Sunflower Morph: scale down to 1.0, fade to opacity 0.04 (matching persistent background watermark!)
         tl.to(preloaderSunflowerAura, {
             scale: 1.0,
             opacity: 0.04,
-            duration: 1.6,
+            duration: 1.8,
             ease: 'power2.inOut'
         });
 
-        // Calculate dynamic offset from screen center to top-left navbar logo (.logo-link img)
+        // Calculate dynamic offset & scale from preloaderAssembly center to top-left navbar logo (.logo-link img)
         const navbarLogo = document.querySelector('.logo-link img') || document.querySelector('.logo-link');
         let targetX = -window.innerWidth * 0.38;
         let targetY = -window.innerHeight * 0.42;
+        let targetScale = 0.25;
 
-        if (navbarLogo) {
+        if (navbarLogo && preloaderAssembly) {
             const logoRect = navbarLogo.getBoundingClientRect();
-            const logoCenterX = logoRect.left + logoRect.width / 2;
-            const logoCenterY = logoRect.top + logoRect.height / 2;
-            const assemblyCenterX = window.innerWidth / 2;
-            const assemblyCenterY = window.innerHeight / 2;
+            const assemblyRect = preloaderAssembly.getBoundingClientRect();
 
-            targetX = logoCenterX - assemblyCenterX;
-            targetY = logoCenterY - assemblyCenterY;
+            if (logoRect.height > 0 && assemblyRect.height > 0) {
+                targetScale = Math.min(Math.max(logoRect.height / assemblyRect.height, 0.18), 0.35);
+                const logoCenterX = logoRect.left + (logoRect.width / 2);
+                const logoCenterY = logoRect.top + (logoRect.height / 2);
+                const assemblyCenterX = assemblyRect.left + (assemblyRect.width / 2);
+                const assemblyCenterY = assemblyRect.top + (assemblyRect.height / 2);
+
+                targetX = logoCenterX - assemblyCenterX;
+                targetY = logoCenterY - assemblyCenterY;
+            }
         }
 
-        // Animate preloaderAssembly scale down (scale: 0.22) & translate directly into top-left logo position smoothly over 1.7s
+        // Fade out dark preloader backdrop smoothly to reveal homepage underneath (1.8s)
         tl.to(preloaderBackdrop, {
-            clipPath: 'inset(0% 0% 100% 0%)',
+            opacity: 0,
+            duration: 1.8,
+            ease: 'power2.inOut'
+        }, "<");
+
+        tl.to(preloaderAssembly, {
+            scale: targetScale,
+            x: targetX,
+            y: targetY,
+            opacity: 0,
             duration: 1.8,
             ease: 'power3.inOut'
         }, "<");
 
-        tl.to(preloaderAssembly, {
-            scale: 0.22,
-            x: targetX,
-            y: targetY,
-            opacity: 0,
-            duration: 1.7,
-            ease: 'power3.inOut'
-        }, "<");
-
         // Stagger Hero Entrance
-        tl.fromTo('.hero-title', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, "-=0.5");
+        tl.fromTo('.hero-title', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, "-=0.6");
         tl.fromTo('.hero-subtitle', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, "-=0.7");
         tl.fromTo('.hero-cta', { y: 25, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, "-=0.6");
     } else if (preloader) {
         // Fallback if GSAP CDN fails
         setTimeout(() => {
-            if (preloaderBackdrop) preloaderBackdrop.style.clipPath = 'inset(0% 0% 100% 0%)';
+            if (preloaderBackdrop) preloaderBackdrop.style.opacity = '0';
             document.body.classList.remove('is-preloading');
-            setTimeout(() => { preloader.style.display = 'none'; }, 950);
+            setTimeout(() => { preloader.style.display = 'none'; }, 1000);
         }, 1200);
     }
 

@@ -22,23 +22,22 @@
         <div class="preloader-backdrop"></div>
         <div class="preloader-glow" id="preloaderGlow"></div>
         
-        <!-- Layer 10: Sunflower Aura SVG (Morphs seamlessly into persistent background watermark) -->
+        <!-- Layer 10: Sunflower Aura SVG (260px Inner Safe Zone for Crisp Text Readability) -->
         <div class="preloader-sunflower-aura" id="preloaderSunflowerAura">
             <svg viewBox="0 0 1000 1000" class="preloader-sunflower-svg">
-                <g stroke="#D4AF37" stroke-width="1.4" fill="none">
+                <g stroke="#D4AF37" stroke-width="1.5" fill="none" opacity="0.9">
                     <circle cx="500" cy="500" r="480" />
                     <circle cx="500" cy="500" r="380" />
-                    <circle cx="500" cy="500" r="280" />
-                    <circle cx="500" cy="500" r="180" />
-                    <circle cx="500" cy="500" r="80" />
-                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" />
-                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(22.5 500 500)" />
-                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(45 500 500)" />
-                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(67.5 500 500)" />
-                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(90 500 500)" />
-                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(112.5 500 500)" />
-                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(135 500 500)" />
-                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(157.5 500 500)" />
+                    <circle cx="500" cy="500" r="280" opacity="0.6" />
+                    <!-- Outer Petal Arcs (Radiating outside r = 260px safe zone) -->
+                    <path d="M500,50 Q640,145 500,240 Q360,145 500,50 Z" />
+                    <path d="M500,50 Q640,145 500,240 Q360,145 500,50 Z" transform="rotate(22.5 500 500)" />
+                    <path d="M500,50 Q640,145 500,240 Q360,145 500,50 Z" transform="rotate(45 500 500)" />
+                    <path d="M500,50 Q640,145 500,240 Q360,145 500,50 Z" transform="rotate(67.5 500 500)" />
+                    <path d="M500,50 Q640,145 500,240 Q360,145 500,50 Z" transform="rotate(90 500 500)" />
+                    <path d="M500,50 Q640,145 500,240 Q360,145 500,50 Z" transform="rotate(112.5 500 500)" />
+                    <path d="M500,50 Q640,145 500,240 Q360,145 500,50 Z" transform="rotate(135 500 500)" />
+                    <path d="M500,50 Q640,145 500,240 Q360,145 500,50 Z" transform="rotate(157.5 500 500)" />
                 </g>
             </svg>
         </div>
@@ -53,10 +52,10 @@
                 <img src="Media/KB.png" alt="KB Monogram" class="preloader-kb-png" id="preloaderKBImg">
             </div>
 
-            <!-- Typography & Tagline -->
+            <!-- Typography & Tagline (Matching Reference Image) -->
             <div class="preloader-text-group" id="preloaderTextGroup">
-                <h2 class="preloader-title">MC KIRAN <span class="gold-text-gradient">BARTHWAL</span></h2>
-                <div class="preloader-separator"></div>
+                <h2 class="preloader-title"><span class="preloader-title-white">MC KIRAN</span> <span class="preloader-title-gold">BARTHWAL</span></h2>
+                <div class="preloader-title-underline"></div>
                 <p class="preloader-tagline">HOSTING YOUR NEXT MEMORY</p>
             </div>
         </div>
@@ -87,8 +86,8 @@
     <header id="header" class="header">
         <div class="container header-container">
             <a href="#" class="logo-link">
-                <!-- Using high-res black bg logo -->
-                <img src="Media/Logo black bg.png" alt="Kiran Barthwal Logo" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <!-- Using high-res transparent background logo -->
+                <img src="Media/Logo transparent bg.png" alt="Kiran Barthwal Logo" class="logo" onerror="this.src='Media/Logo black bg.png';">
                 <span class="logo-text" style="display:none;">KIRAN <span class="gold-text">BARTHWAL</span></span>
             </a>
             <button class="menu-toggle" aria-label="Toggle Menu">
@@ -598,8 +597,7 @@
     <footer class="footer">
         <div class="container footer-content">
              <div class="footer-logo">
-                 <img src="Media/Logo with tagline black bg.png" alt="Kiran Barthwal Logo with Tagline" class="footer-img-logo" onerror="this.style.display='none';">
-                 <h3>KIRAN <span class="gold-text">BARTHWAL</span></h3>
+                 <img src="Media/Logo with tagline black bg.png" alt="Kiran Barthwal Logo with Tagline" class="footer-img-logo">
              </div>
              <div class="footer-social">
                  <a href="https://www.linkedin.com/in/kiran-barthwal" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
