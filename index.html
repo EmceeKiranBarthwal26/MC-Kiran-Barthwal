@@ -35,7 +35,7 @@
                     <li><a href="#gallery" class="nav-link">Gallery</a></li>
                     <li><a href="#clients" class="nav-link">Clients</a></li>
                     <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
-                    <li><a href="#contact" class="nav-link btn-nav">Book Now</a></li>
+                    <li><button class="nav-link btn-nav btn-glow open-booking-modal"><i class="fas fa-calendar-check"></i> Book Kiran</button></li>
                 </ul>
             </nav>
         </div>
@@ -54,8 +54,8 @@
                 <p class="hero-subtitle fade-up delay-1">Professional Event Host | Corporate Events | Weddings | Live Shows</p>
                 
                 <div class="hero-cta fade-up delay-2">
-                    <a href="#gallery" class="btn btn-primary">Watch Showreel <i class="fas fa-play-circle btn-icon"></i></a>
-                    <a href="#contact" class="btn btn-outline">Book Now</a>
+                    <button class="btn btn-primary btn-glow open-booking-modal"><i class="fas fa-calendar-star btn-icon"></i> Check Availability</button>
+                    <a href="#gallery" class="btn btn-outline">Watch Showreel <i class="fas fa-play-circle btn-icon"></i></a>
                 </div>
             </div>
         </section>
@@ -150,6 +150,9 @@
                         <p>Creating buzz and excitement to ensure your product takes center stage.</p>
                     </div>
                 </div>
+                <div class="align-center mt-5 fade-up">
+                    <button class="btn btn-primary btn-glow open-booking-modal"><i class="fas fa-sparkles btn-icon"></i> Check Availability & Get Quote</button>
+                </div>
             </div>
         </section>
 
@@ -205,7 +208,13 @@
                 </div>
                 <div class="align-center mt-5 fade-up">
                     <button id="loadMoreGallery" class="btn btn-outline">Load More</button>
-                    <!-- Remaining videos will be instantiated in JS to keep HTML clean -->
+                </div>
+
+                <!-- Showcase Call-To-Action Banner -->
+                <div class="showcase-cta-banner align-center mt-5 fade-up gold-border-subtle">
+                    <h3>Planning a High-Profile Event or Gala?</h3>
+                    <p>Secure Kiran Barthwal for your event date before slots fill up.</p>
+                    <button class="btn btn-primary btn-glow open-booking-modal mt-3"><i class="fas fa-microphone-alt btn-icon"></i> Reserve Kiran for Your Event</button>
                 </div>
             </div>
         </section>
@@ -324,8 +333,8 @@
                         </div>
                         <button class="carousel-btn next" id="testiNext"><i class="fas fa-chevron-right"></i></button>
                     </div>
-                    <div class="align-center mt-3 text-muted" style="font-size: 0.9em;">
-                        <em>More video testimonials coming soon...</em>
+                    <div class="align-center mt-4 fade-up">
+                        <button class="btn btn-outline btn-glow open-booking-modal"><i class="fas fa-calendar-plus btn-icon"></i> Check Availability For Your Event</button>
                     </div>
                 </div>
             </div>
@@ -337,60 +346,182 @@
             <div class="contact-bg overlay"></div>
             <div class="container relative-z">
                 <div class="section-header align-center fade-up">
-                    <h2 class="section-title">Book For Your <span class="gold-text">Next Event</span></h2>
+                    <h2 class="section-title">Check Date & <span class="gold-text">Book Kiran</span></h2>
                     <div class="separator-gold"></div>
-                    <p class="section-desc">Reach out to discuss how we can elevate your upcoming event.</p>
+                    <p class="section-desc">Experience a seamless multi-step booking process. Reserve MC Kiran Barthwal for your event.</p>
                 </div>
 
                 <div class="contact-wrapper fade-up delay-1">
-                    <form id="bookingForm" class="booking-form gold-border-subtle">
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label for="name">Full Name *</label>
-                                <input type="text" id="name" name="name" required placeholder="John Doe">
+                    <!-- Inline Booking Wizard Container -->
+                    <div class="booking-wizard-container gold-border-subtle" id="inlineBookingWizard">
+                        <!-- Progress Header -->
+                        <div class="wizard-header">
+                            <div class="wizard-step-info">
+                                <span class="step-badge" id="inlineStepBadge">Step 1 of 4</span>
+                                <span class="step-title-text" id="inlineStepTitle">Client Profile & Contact</span>
                             </div>
-                            <div class="form-group">
-                                <label for="email">Email Address *</label>
-                                <input type="email" id="email" name="email" required placeholder="john@example.com">
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Phone Number *</label>
-                                <input type="tel" id="phone" name="phone" required placeholder="+91 9876543210">
-                            </div>
-                            <div class="form-group">
-                                <label for="eventType">Event Type *</label>
-                                <select id="eventType" name="eventType" required>
-                                    <option value="" disabled selected>Select an Event Type...</option>
-                                    <option value="corporate">Corporate Event</option>
-                                    <option value="wedding">Wedding / Sangeet</option>
-                                    <option value="teambuilding">Team Building</option>
-                                    <option value="award">Award Ceremony</option>
-                                    <option value="college">College Festival</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="eventDate">Event Date *</label>
-                                <input type="date" id="eventDate" name="eventDate" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="eventTime">Event Time</label>
-                                <input type="time" id="eventTime" name="eventTime">
-                            </div>
-                            <div class="form-group full-width">
-                                <label for="eventLocation">Event Location / Venue</label>
-                                <input type="text" id="eventLocation" name="eventLocation" placeholder="City or Venue Name">
-                            </div>
-                            <div class="form-group full-width">
-                                <label for="message">Additional Message / Requirements</label>
-                                <textarea id="message" name="message" rows="4" placeholder="Tell me more about your event..."></textarea>
+                            <div class="wizard-progress-bar">
+                                <div class="wizard-progress-fill" id="inlineProgressFill" style="width: 25%;"></div>
                             </div>
                         </div>
-                        <div class="form-submit align-center mt-4">
-                            <button type="submit" class="btn btn-primary btn-large">Send Inquiry <i class="fas fa-paper-plane btn-icon"></i></button>
+
+                        <!-- Step 1: Contact Information -->
+                        <div class="wizard-step active" data-step="1">
+                            <h3 class="step-heading"><i class="fas fa-user-circle gold-text"></i> Contact Information & Representation</h3>
+                            <p class="step-desc">Let us know how to reach you with date availability and customized proposals.</p>
+                            <div class="form-grid">
+                                <div class="form-group full-width">
+                                    <label for="inline-name">Full Name *</label>
+                                    <input type="text" id="inline-name" class="wizard-input-name" placeholder="e.g. Ananya Sharma or Rahul Mehta" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inline-country">Country Code *</label>
+                                    <select id="inline-country" class="wizard-input-country">
+                                        <option value="+91" selected>🇮🇳 India (+91)</option>
+                                        <option value="+1">🇺🇸 USA / Canada (+1)</option>
+                                        <option value="+44">🇬🇧 UK (+44)</option>
+                                        <option value="+971">🇦🇪 UAE (+971)</option>
+                                        <option value="+65">🇸🇬 Singapore (+65)</option>
+                                        <option value="other">🌐 Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inline-phone">Mobile / WhatsApp Number *</label>
+                                    <input type="tel" id="inline-phone" class="wizard-input-phone" placeholder="9876543210" required>
+                                </div>
+                                <div class="form-group full-width">
+                                    <label for="inline-email">Email Address *</label>
+                                    <input type="email" id="inline-email" class="wizard-input-email" placeholder="client@company.com" required>
+                                </div>
+                            </div>
+                            <div class="wizard-nav mt-4">
+                                <div></div>
+                                <button type="button" class="btn btn-primary btn-next-step" data-wizard="inline">Next: Event Details <i class="fas fa-arrow-right"></i></button>
+                            </div>
                         </div>
-                        <div id="formStatus" class="form-status mt-3 align-center"></div>
-                    </form>
+
+                        <!-- Step 2: Event Details & Role -->
+                        <div class="wizard-step" data-step="2">
+                            <h3 class="step-heading"><i class="fas fa-glass-cheers gold-text"></i> Event Type & Stakeholder Role</h3>
+                            <p class="step-desc">Select the category of your event and your representation role.</p>
+                            
+                            <div class="form-group full-width">
+                                <label>Select Event Category *</label>
+                                <div class="pill-grid wizard-event-type-pills">
+                                    <div class="select-pill active" data-value="Wedding / Sangeet"><i class="fas fa-heart gold-text"></i> Wedding / Sangeet</div>
+                                    <div class="select-pill" data-value="Corporate Event"><i class="fas fa-briefcase gold-text"></i> Corporate Summit / Gala</div>
+                                    <div class="select-pill" data-value="Award Ceremony"><i class="fas fa-trophy gold-text"></i> Award Ceremony</div>
+                                    <div class="select-pill" data-value="Concert / Festival"><i class="fas fa-music gold-text"></i> Concert / Festival</div>
+                                    <div class="select-pill" data-value="Private Party"><i class="fas fa-cocktail gold-text"></i> Private Milestone Party</div>
+                                    <div class="select-pill" data-value="Other Event"><i class="fas fa-star gold-text"></i> Other Show</div>
+                                </div>
+                            </div>
+
+                            <div class="form-grid mt-3">
+                                <div class="form-group">
+                                    <label for="inline-event-name">Event Name / Title (Optional)</label>
+                                    <input type="text" id="inline-event-name" class="wizard-input-eventname" placeholder="e.g. Tech Vision Summit 2026">
+                                </div>
+                                <div class="form-group">
+                                    <label for="inline-role">Your Role / Representation *</label>
+                                    <select id="inline-role" class="wizard-input-role">
+                                        <option value="Event Planner / EMC">Event Planner / EMC</option>
+                                        <option value="Direct Host / Client">Direct Host / Client</option>
+                                        <option value="Talent / Artist Agency">Talent / Artist Booking Agency</option>
+                                        <option value="Corporate HR / Brand Manager">Corporate HR / Brand Manager</option>
+                                        <option value="Friend / Family Representative">Friend / Family Representative</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="wizard-nav mt-4">
+                                <button type="button" class="btn btn-outline btn-prev-step" data-wizard="inline"><i class="fas fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn btn-primary btn-next-step" data-wizard="inline">Next: Date & Location <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: Location & Schedule -->
+                        <div class="wizard-step" data-step="3">
+                            <h3 class="step-heading"><i class="fas fa-map-marked-alt gold-text"></i> Date, City & Slot Duration</h3>
+                            <p class="step-desc">Pick your event date and tell us the venue details.</p>
+                            
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="inline-date">Event Date *</label>
+                                    <input type="date" id="inline-date" class="wizard-input-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="inline-location">City & Venue Location *</label>
+                                    <input type="text" id="inline-location" class="wizard-input-location" placeholder="e.g. Hyderabad - HICC Novotel" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group full-width mt-3">
+                                <label>Event Slot / Duration *</label>
+                                <div class="pill-grid wizard-duration-pills">
+                                    <div class="select-pill active" data-value="Half-Day / Evening"><i class="fas fa-clock gold-text"></i> Half-Day / Evening</div>
+                                    <div class="select-pill" data-value="Full-Day Event"><i class="fas fa-sun gold-text"></i> Full-Day Event</div>
+                                    <div class="select-pill" data-value="Multi-Day Festival"><i class="fas fa-calendar-alt gold-text"></i> Multi-Day Festival</div>
+                                </div>
+                            </div>
+
+                            <div class="wizard-nav mt-4">
+                                <button type="button" class="btn btn-outline btn-prev-step" data-wizard="inline"><i class="fas fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn btn-primary btn-next-step" data-wizard="inline">Next: Commercials <i class="fas fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Budget & Commercial Proposal -->
+                        <div class="wizard-step" data-step="4">
+                            <h3 class="step-heading"><i class="fas fa-hand-holding-usd gold-text"></i> Commercial Proposal & Preferences</h3>
+                            <p class="step-desc">Help us tailor the right proposal for your budget and specific stage requirements.</p>
+                            
+                            <div class="form-group full-width">
+                                <label>Offered Budget / Commercial Quotation *</label>
+                                <div class="budget-input-wrapper">
+                                    <div class="currency-toggle">
+                                        <button type="button" class="currency-btn active" data-currency="INR">₹ INR</button>
+                                        <button type="button" class="currency-btn" data-currency="USD">$ USD</button>
+                                    </div>
+                                    <input type="number" id="inline-budget" class="wizard-input-budget" placeholder="e.g. 75000" min="0" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group full-width mt-3">
+                                <label for="inline-notes">Special Requests / Language & Stage Requirements</label>
+                                <textarea id="inline-notes" class="wizard-input-notes" rows="3" placeholder="Tell us about the audience profile, language mix (English/Hindi/Telugu), or specific show requirements..."></textarea>
+                            </div>
+
+                            <div class="wizard-nav mt-4">
+                                <button type="button" class="btn btn-outline btn-prev-step" data-wizard="inline"><i class="fas fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn btn-primary btn-submit-wizard" data-wizard="inline"><i class="fas fa-paper-plane"></i> Submit Booking Request</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 5: High-Impact Success & WhatsApp Action Screen -->
+                        <div class="wizard-step step-success" data-step="5">
+                            <canvas class="confetti-canvas" id="inlineConfettiCanvas"></canvas>
+                            <div class="success-card align-center">
+                                <div class="success-icon-wrapper">
+                                    <i class="fas fa-check-circle gold-text"></i>
+                                </div>
+                                <h2 class="success-title">Booking Request Submitted!</h2>
+                                <p class="success-subtext">Thank you! Your date inquiry for <strong class="wizard-summary-event">Event</strong> on <strong class="wizard-summary-date">Date</strong> has been registered.</p>
+                                
+                                <div class="turnaround-notice gold-border-subtle">
+                                    <i class="fas fa-history gold-text"></i>
+                                    <span><strong>Availability Review:</strong> Our team will review date availability and respond within <strong>2-4 hours</strong>.</span>
+                                </div>
+
+                                <div class="direct-actions-grid mt-4">
+                                    <a href="#" target="_blank" class="btn btn-whatsapp wizard-whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat Direct on WhatsApp</a>
+                                    <a href="tel:+918328386380" class="btn btn-outline"><i class="fas fa-phone-alt"></i> Request Instant Callback</a>
+                                </div>
+
+                                <button type="button" class="btn btn-link mt-3 btn-reset-wizard" data-wizard="inline">Submit Another Inquiry</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -410,6 +541,182 @@
              <p class="copyright">&copy; <span id="currentYear"></span> Kiran Barthwal. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Booking Modal Overlay -->
+    <div id="bookingModal" class="booking-modal-overlay">
+        <div class="booking-modal-content gold-border">
+            <button class="close-booking-modal" aria-label="Close Booking Modal">&times;</button>
+            <div class="booking-wizard-container" id="modalBookingWizard">
+                <!-- Progress Header -->
+                <div class="wizard-header">
+                    <div class="wizard-step-info">
+                        <span class="step-badge" id="modalStepBadge">Step 1 of 4</span>
+                        <span class="step-title-text" id="modalStepTitle">Client Profile & Contact</span>
+                    </div>
+                    <div class="wizard-progress-bar">
+                        <div class="wizard-progress-fill" id="modalProgressFill" style="width: 25%;"></div>
+                    </div>
+                </div>
+
+                <!-- Step 1: Contact Information -->
+                <div class="wizard-step active" data-step="1">
+                    <h3 class="step-heading"><i class="fas fa-user-circle gold-text"></i> Contact Information & Representation</h3>
+                    <p class="step-desc">Let us know how to reach you with date availability and customized proposals.</p>
+                    <div class="form-grid">
+                        <div class="form-group full-width">
+                            <label for="modal-name">Full Name *</label>
+                            <input type="text" id="modal-name" class="wizard-input-name" placeholder="e.g. Ananya Sharma or Rahul Mehta" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-country">Country Code *</label>
+                            <select id="modal-country" class="wizard-input-country">
+                                <option value="+91" selected>🇮🇳 India (+91)</option>
+                                <option value="+1">🇺🇸 USA / Canada (+1)</option>
+                                <option value="+44">🇬🇧 UK (+44)</option>
+                                <option value="+971">🇦🇪 UAE (+971)</option>
+                                <option value="+65">🇸🇬 Singapore (+65)</option>
+                                <option value="other">🌐 Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-phone">Mobile / WhatsApp Number *</label>
+                            <input type="tel" id="modal-phone" class="wizard-input-phone" placeholder="9876543210" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="modal-email">Email Address *</label>
+                            <input type="email" id="modal-email" class="wizard-input-email" placeholder="client@company.com" required>
+                        </div>
+                    </div>
+                    <div class="wizard-nav mt-4">
+                        <div></div>
+                        <button type="button" class="btn btn-primary btn-next-step" data-wizard="modal">Next: Event Details <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Event Details & Role -->
+                <div class="wizard-step" data-step="2">
+                    <h3 class="step-heading"><i class="fas fa-glass-cheers gold-text"></i> Event Type & Stakeholder Role</h3>
+                    <p class="step-desc">Select the category of your event and your representation role.</p>
+                    
+                    <div class="form-group full-width">
+                        <label>Select Event Category *</label>
+                        <div class="pill-grid wizard-event-type-pills">
+                            <div class="select-pill active" data-value="Wedding / Sangeet"><i class="fas fa-heart gold-text"></i> Wedding / Sangeet</div>
+                            <div class="select-pill" data-value="Corporate Event"><i class="fas fa-briefcase gold-text"></i> Corporate Summit / Gala</div>
+                            <div class="select-pill" data-value="Award Ceremony"><i class="fas fa-trophy gold-text"></i> Award Ceremony</div>
+                            <div class="select-pill" data-value="Concert / Festival"><i class="fas fa-music gold-text"></i> Concert / Festival</div>
+                            <div class="select-pill" data-value="Private Party"><i class="fas fa-cocktail gold-text"></i> Private Milestone Party</div>
+                            <div class="select-pill" data-value="Other Event"><i class="fas fa-star gold-text"></i> Other Show</div>
+                        </div>
+                    </div>
+
+                    <div class="form-grid mt-3">
+                        <div class="form-group">
+                            <label for="modal-event-name">Event Name / Title (Optional)</label>
+                            <input type="text" id="modal-event-name" class="wizard-input-eventname" placeholder="e.g. Tech Vision Summit 2026">
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-role">Your Role / Representation *</label>
+                            <select id="modal-role" class="wizard-input-role">
+                                <option value="Event Planner / EMC">Event Planner / EMC</option>
+                                <option value="Direct Host / Client">Direct Host / Client</option>
+                                <option value="Talent / Artist Agency">Talent / Artist Booking Agency</option>
+                                <option value="Corporate HR / Brand Manager">Corporate HR / Brand Manager</option>
+                                <option value="Friend / Family Representative">Friend / Family Representative</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="wizard-nav mt-4">
+                        <button type="button" class="btn btn-outline btn-prev-step" data-wizard="modal"><i class="fas fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn btn-primary btn-next-step" data-wizard="modal">Next: Date & Location <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Location & Schedule -->
+                <div class="wizard-step" data-step="3">
+                    <h3 class="step-heading"><i class="fas fa-map-marked-alt gold-text"></i> Date, City & Slot Duration</h3>
+                    <p class="step-desc">Pick your event date and tell us the venue details.</p>
+                    
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="modal-date">Event Date *</label>
+                            <input type="date" id="modal-date" class="wizard-input-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="modal-location">City & Venue Location *</label>
+                            <input type="text" id="modal-location" class="wizard-input-location" placeholder="e.g. Hyderabad - HICC Novotel" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width mt-3">
+                        <label>Event Slot / Duration *</label>
+                        <div class="pill-grid wizard-duration-pills">
+                            <div class="select-pill active" data-value="Half-Day / Evening"><i class="fas fa-clock gold-text"></i> Half-Day / Evening</div>
+                            <div class="select-pill" data-value="Full-Day Event"><i class="fas fa-sun gold-text"></i> Full-Day Event</div>
+                            <div class="select-pill" data-value="Multi-Day Festival"><i class="fas fa-calendar-alt gold-text"></i> Multi-Day Festival</div>
+                        </div>
+                    </div>
+
+                    <div class="wizard-nav mt-4">
+                        <button type="button" class="btn btn-outline btn-prev-step" data-wizard="modal"><i class="fas fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn btn-primary btn-next-step" data-wizard="modal">Next: Commercials <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Budget & Commercial Proposal -->
+                <div class="wizard-step" data-step="4">
+                    <h3 class="step-heading"><i class="fas fa-hand-holding-usd gold-text"></i> Commercial Proposal & Preferences</h3>
+                    <p class="step-desc">Help us tailor the right proposal for your budget and specific stage requirements.</p>
+                    
+                    <div class="form-group full-width">
+                        <label>Offered Budget / Commercial Quotation *</label>
+                        <div class="budget-input-wrapper">
+                            <div class="currency-toggle">
+                                <button type="button" class="currency-btn active" data-currency="INR">₹ INR</button>
+                                <button type="button" class="currency-btn" data-currency="USD">$ USD</button>
+                            </div>
+                            <input type="number" id="modal-budget" class="wizard-input-budget" placeholder="e.g. 75000" min="0" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group full-width mt-3">
+                        <label for="modal-notes">Special Requests / Language & Stage Requirements</label>
+                        <textarea id="modal-notes" class="wizard-input-notes" rows="3" placeholder="Tell us about the audience profile, language mix (English/Hindi/Telugu), or specific show requirements..."></textarea>
+                    </div>
+
+                    <div class="wizard-nav mt-4">
+                        <button type="button" class="btn btn-outline btn-prev-step" data-wizard="modal"><i class="fas fa-arrow-left"></i> Back</button>
+                        <button type="button" class="btn btn-primary btn-submit-wizard" data-wizard="modal"><i class="fas fa-paper-plane"></i> Submit Booking Request</button>
+                    </div>
+                </div>
+
+                <!-- Step 5: High-Impact Success & WhatsApp Action Screen -->
+                <div class="wizard-step step-success" data-step="5">
+                    <canvas class="confetti-canvas" id="modalConfettiCanvas"></canvas>
+                    <div class="success-card align-center">
+                        <div class="success-icon-wrapper">
+                            <i class="fas fa-check-circle gold-text"></i>
+                        </div>
+                        <h2 class="success-title">Booking Request Submitted!</h2>
+                        <p class="success-subtext">Thank you! Your date inquiry for <strong class="wizard-summary-event">Event</strong> on <strong class="wizard-summary-date">Date</strong> has been registered.</p>
+                        
+                        <div class="turnaround-notice gold-border-subtle">
+                            <i class="fas fa-history gold-text"></i>
+                            <span><strong>Availability Review:</strong> Our team will review date availability and respond within <strong>2-4 hours</strong>.</span>
+                        </div>
+
+                        <div class="direct-actions-grid mt-4">
+                            <a href="#" target="_blank" class="btn btn-whatsapp wizard-whatsapp-btn"><i class="fab fa-whatsapp"></i> Chat Direct on WhatsApp</a>
+                            <a href="tel:+918328386380" class="btn btn-outline"><i class="fas fa-phone-alt"></i> Request Instant Callback</a>
+                        </div>
+
+                        <button type="button" class="btn btn-link mt-3 btn-reset-wizard" data-wizard="modal">Submit Another Inquiry</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Lightbox Modal -->
     <div id="lightbox" class="lightbox">

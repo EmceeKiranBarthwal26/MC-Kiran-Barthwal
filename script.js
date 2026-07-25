@@ -283,37 +283,336 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 8000);
     }
 
-    // --- Booking Form Submit ---
-    const bookingForm = document.getElementById('bookingForm');
-    const formStatus = document.getElementById('formStatus');
+    // =========================================
+    // MULTI-STEP BOOKING WIZARD & MODAL ENGINE
+    // =========================================
+    
+    // Set minimum date picker to today
+    const todayISO = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('.wizard-input-date').forEach(input => {
+        input.setAttribute('min', todayISO);
+    });
 
-    if(bookingForm) {
-        bookingForm.addEventListener('submit', (e) => {
+    // Booking Modal Open & Close Triggers
+    const bookingModal = document.getElementById('bookingModal');
+    const openModalBtns = document.querySelectorAll('.open-booking-modal');
+    const closeModalBtn = document.querySelector('.close-booking-modal');
+
+    function openBookingModal() {
+        if (!bookingModal) return;
+        bookingModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeBookingModal() {
+        if (!bookingModal) return;
+        bookingModal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    openModalBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
             e.preventDefault();
-            
-            // Collect form data
-            const formData = new FormData(bookingForm);
-            const data = Object.fromEntries(formData.entries());
-            
-            // In a real scenario, this would be an API call (fetch)
-            // Simulating a successful submission response:
-            
-            const btn = bookingForm.querySelector('button[type="submit"]');
-            const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
-            btn.disabled = true;
+            openBookingModal();
+        });
+    });
 
-            setTimeout(() => {
-                formStatus.innerHTML = `<span style="color: #4CAF50; font-weight: 600;"><i class="fas fa-check-circle"></i> Thank you, ${data.name}! Your inquiry has been sent successfully. I will get back to you shortly.</span>`;
-                bookingForm.reset();
-                btn.innerHTML = originalText;
-                btn.disabled = false;
-                
-                setTimeout(() => {
-                    formStatus.innerHTML = '';
-                }, 5000);
-            }, 1500);
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeBookingModal);
+    }
+
+    if (bookingModal) {
+        bookingModal.addEventListener('click', (e) => {
+            if (e.target === bookingModal) {
+                closeBookingModal();
+            }
         });
     }
 
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && bookingModal && bookingModal.classList.contains('active')) {
+            closeBookingModal();
+        }
+    });
+
+    // Interactive Pill Selections
+    document.querySelectorAll('.select-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+            const parentGrid = pill.parentElement;
+            parentGrid.querySelectorAll('.select-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+        });
+    });
+
+    // Currency Toggle Selections
+    document.querySelectorAll('.currency-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const parentToggle = btn.parentElement;
+            parentToggle.querySelectorAll('.currency-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    // Wizard Engine Functionality for Inline & Modal Wizards
+    const stepTitles = {
+        1: "Client Profile & Contact",
+        2: "Event Type & Stakeholder Role",
+        3: "Date, City & Duration",
+        4: "Commercial Proposal & Preferences",
+        5: "Booking Request Confirmation"
+    };
+
+    const stepPercentages = {
+        1: "25%",
+        2: "50%",
+        3: "75%",
+        4: "100%",
+        5: "100%"
+    };
+
+    function initWizard(wizardId) {
+        const container = document.getElementById(wizardId);
+        if (!container) return;
+
+        let currentStep = 1;
+
+        const badge = container.querySelector('.step-badge');
+        const titleText = container.querySelector('.step-title-text');
+        const progressFill = container.querySelector('.wizard-progress-fill');
+        const steps = container.querySelectorAll('.wizard-step');
+        const nextBtns = container.querySelectorAll('.btn-next-step');
+        const prevBtns = container.querySelectorAll('.btn-prev-step');
+        const submitBtn = container.querySelector('.btn-submit-wizard');
+        const resetBtn = container.querySelector('.btn-reset-wizard');
+
+        function updateStepView(newStep) {
+            steps.forEach(stepEl => {
+                const stepNum = parseInt(stepEl.getAttribute('data-step'));
+                if (stepNum === newStep) {
+                    stepEl.classList.add('active');
+                } else {
+                    stepEl.classList.remove('active');
+                }
+            });
+
+            currentStep = newStep;
+            if (badge) badge.textContent = `Step ${Math.min(currentStep, 4)} of 4`;
+            if (titleText) titleText.textContent = stepTitles[currentStep] || '';
+            if (progressFill) progressFill.style.width = stepPercentages[currentStep] || '100%';
+        }
+
+        function validateStep(stepNum) {
+            let isValid = true;
+            const currentStepEl = container.querySelector(`.wizard-step[data-step="${stepNum}"]`);
+            if (!currentStepEl) return true;
+
+            // Clear previous errors
+            currentStepEl.querySelectorAll('input, select').forEach(input => {
+                input.style.borderColor = '';
+            });
+
+            if (stepNum === 1) {
+                const nameInput = currentStepEl.querySelector('.wizard-input-name');
+                const phoneInput = currentStepEl.querySelector('.wizard-input-phone');
+                const emailInput = currentStepEl.querySelector('.wizard-input-email');
+
+                if (!nameInput.value.trim()) {
+                    nameInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                }
+                if (!phoneInput.value.trim() || phoneInput.value.trim().length < 7) {
+                    phoneInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                }
+                if (!emailInput.value.trim() || !emailInput.value.includes('@')) {
+                    emailInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                }
+            } else if (stepNum === 3) {
+                const dateInput = currentStepEl.querySelector('.wizard-input-date');
+                const locationInput = currentStepEl.querySelector('.wizard-input-location');
+
+                if (!dateInput.value) {
+                    dateInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                }
+                if (!locationInput.value.trim()) {
+                    locationInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                }
+            } else if (stepNum === 4) {
+                const budgetInput = currentStepEl.querySelector('.wizard-input-budget');
+                if (!budgetInput.value || parseFloat(budgetInput.value) <= 0) {
+                    budgetInput.style.borderColor = '#ff4d4d';
+                    isValid = false;
+                }
+            }
+
+            return isValid;
+        }
+
+        nextBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (validateStep(currentStep)) {
+                    updateStepView(currentStep + 1);
+                }
+            });
+        });
+
+        prevBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    updateStepView(currentStep - 1);
+                }
+            });
+        });
+
+        if (submitBtn) {
+            submitBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (!validateStep(4)) return;
+
+                // Collect full booking data
+                const name = container.querySelector('.wizard-input-name').value.trim();
+                const countryCode = container.querySelector('.wizard-input-country').value;
+                const phone = container.querySelector('.wizard-input-phone').value.trim();
+                const email = container.querySelector('.wizard-input-email').value.trim();
+                
+                const eventTypePill = container.querySelector('.wizard-event-type-pills .select-pill.active');
+                const eventType = eventTypePill ? eventTypePill.getAttribute('data-value') : 'Event';
+                const eventName = container.querySelector('.wizard-input-eventname').value.trim();
+                const role = container.querySelector('.wizard-input-role').value;
+
+                const eventDate = container.querySelector('.wizard-input-date').value;
+                const location = container.querySelector('.wizard-input-location').value.trim();
+                const durationPill = container.querySelector('.wizard-duration-pills .select-pill.active');
+                const duration = durationPill ? durationPill.getAttribute('data-value') : 'Full-Day';
+
+                const currencyBtn = container.querySelector('.currency-btn.active');
+                const currency = currencyBtn ? currencyBtn.getAttribute('data-currency') : 'INR';
+                const budget = container.querySelector('.wizard-input-budget').value;
+                const notes = container.querySelector('.wizard-input-notes').value.trim();
+
+                // Format display text in step 5
+                const summaryEvent = container.querySelector('.wizard-summary-event');
+                const summaryDate = container.querySelector('.wizard-summary-date');
+                if (summaryEvent) summaryEvent.textContent = eventName ? `${eventType} (${eventName})` : eventType;
+                if (summaryDate) summaryDate.textContent = eventDate;
+
+                // Build WhatsApp pre-filled text
+                const whatsappText = encodeURIComponent(
+                    `*NEW BOOKING INQUIRY - MC KIRAN BARTHWAL*\n\n` +
+                    `👤 *Client Name:* ${name}\n` +
+                    `📞 *Phone:* ${countryCode} ${phone}\n` +
+                    `📧 *Email:* ${email}\n\n` +
+                    `🎭 *Event Type:* ${eventType}${eventName ? ` (${eventName})` : ''}\n` +
+                    `👔 *Representation:* ${role}\n\n` +
+                    `📅 *Date:* ${eventDate}\n` +
+                    `📍 *Location:* ${location}\n` +
+                    `⏱️ *Duration:* ${duration}\n\n` +
+                    `💰 *Proposed Budget:* ${currency === 'INR' ? '₹' : '$'}${budget}\n` +
+                    `📝 *Special Requests:* ${notes || 'None'}`
+                );
+
+                const whatsappBtn = container.querySelector('.wizard-whatsapp-btn');
+                if (whatsappBtn) {
+                    whatsappBtn.href = `https://wa.me/918328386380?text=${whatsappText}`;
+                }
+
+                // Show step 5 success screen
+                updateStepView(5);
+
+                // Trigger celebration confetti
+                const canvas = container.querySelector('.confetti-canvas');
+                if (canvas) {
+                    triggerConfetti(canvas);
+                }
+            });
+        }
+
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                // Reset inputs
+                container.querySelectorAll('input').forEach(i => i.value = '');
+                container.querySelectorAll('textarea').forEach(t => t.value = '');
+                updateStepView(1);
+            });
+        }
+    }
+
+    // Initialize both inline and modal wizards
+    initWizard('inlineBookingWizard');
+    initWizard('modalBookingWizard');
+
+    // Confetti Animation System
+    function triggerConfetti(canvas) {
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.parentElement.clientWidth || 600;
+        canvas.height = canvas.parentElement.clientHeight || 400;
+
+        const particles = [];
+        const colors = ['#d4af37', '#f3e5ab', '#ffffff', '#ffd700', '#e0c068'];
+
+        for (let i = 0; i < 60; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 6 + 3,
+                d: Math.random() * 60,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                tilt: Math.floor(Math.random() * 10) - 10,
+                tiltAngleIncremental: Math.random() * 0.07 + 0.05,
+                tiltAngle: 0
+            });
+        }
+
+        let animationFrame;
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.lineWidth = p.r;
+                ctx.strokeStyle = p.color;
+                ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+                ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+                ctx.stroke();
+            });
+            update();
+        }
+
+        function update() {
+            particles.forEach((p, i) => {
+                p.tiltAngle += p.tiltAngleIncremental;
+                p.y += (Math.cos(p.d) + 1 + p.r / 2) / 2;
+                p.tilt = Math.sin(p.tiltAngle) * 15;
+                if (p.y > canvas.height) {
+                    particles[i] = {
+                        x: Math.random() * canvas.width,
+                        y: -10,
+                        r: p.r,
+                        d: p.d,
+                        color: p.color,
+                        tilt: p.tilt,
+                        tiltAngleIncremental: p.tiltAngleIncremental,
+                        tiltAngle: p.tiltAngle
+                    };
+                }
+            });
+        }
+
+        let count = 0;
+        function loop() {
+            draw();
+            count++;
+            if (count < 180) {
+                animationFrame = requestAnimationFrame(loop);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+        loop();
+    }
+
 });
+
