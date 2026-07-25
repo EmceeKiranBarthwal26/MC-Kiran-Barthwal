@@ -25,51 +25,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Phase 1: Initial State & Mic Gliding ---
         // KB Monogram pre-positioned at center screen (opacity: 1, scale: 1)
-        // Mic starts off-screen to left (x: '-70vw', opacity: 0)
+        // Mic glides smoothly from off-screen left (x: '-70vw', opacity: 0)
         gsap.set(preloaderKBImg, { opacity: 1, scale: 1 });
         gsap.set(preloaderMicImg, { x: '-70vw', opacity: 0 });
         gsap.set(preloaderTextGroup, { opacity: 0, y: 15 });
         gsap.set(preloaderSunflowerAura, { scale: 0.5, opacity: 0 });
         gsap.set(preloaderGlow, { opacity: 0, scale: 0.3 });
 
-        // Glide Mic.png along X-axis to docking position (x: 0, 1.35s, power3.out)
+        // Glide Mic.png along X-axis to docking position (x: 0, 1.6s, power3.out)
         tl.to(preloaderMicImg, {
             x: 0,
             opacity: 1,
-            duration: 1.35,
+            duration: 1.6,
             ease: 'power3.out'
         });
 
         // --- Phase 2: Docking Merge & Sunflower Aura Bloom ---
         // At exact millisecond Mic.png docks against 'K':
         // 1. Gold drop-shadow impact on mic & monogram
-        // 2. Reveal tagline text ("MC KIRAN BARTHWAL" & "HOSTING YOUR NEXT MEMORY", 0.4s)
-        // 3. Sunflower Bloom expands outward (scale 0.5 -> 1.3, opacity 0 -> 0.5, 0.65s, power2.out)
+        // 2. Reveal tagline text ("MC KIRAN BARTHWAL" & "HOSTING YOUR NEXT MEMORY", 0.6s)
+        // 3. Sunflower Bloom expands outward (scale 0.5 -> 1.35, opacity 0 -> 0.55, 0.85s, power2.out)
         tl.to([preloaderMicImg, preloaderKBImg], {
-            filter: 'drop-shadow(0 0 30px rgba(212, 175, 55, 0.85))',
-            duration: 0.3
+            filter: 'drop-shadow(0 0 35px rgba(212, 175, 55, 0.85))',
+            duration: 0.4
         });
 
         tl.to(preloaderTextGroup, {
             opacity: 1,
             y: 0,
-            duration: 0.4,
+            duration: 0.6,
             ease: 'power2.out'
         }, "<");
 
         tl.to(preloaderSunflowerAura, {
-            scale: 1.3,
-            opacity: 0.5,
-            duration: 0.65,
+            scale: 1.35,
+            opacity: 0.55,
+            duration: 0.85,
             ease: 'power2.out'
         }, "<");
 
+        // --- Cinematic Hold Pause ---
+        // Hold full assembled composition comfortably on screen so user feels the luxury
+        tl.to({}, { duration: 1.2 });
+
         // --- Phase 3: Morph Sunflower into Persistent Background Watermark & Header Morph ---
-        // Sunflower Morph: scale down from 1.3 to 1.0, fade opacity from 0.5 to 0.04 (matching background watermark!)
+        // Sunflower Morph: scale down from 1.35 to 1.0, fade opacity from 0.55 to 0.04 (matching background watermark!)
         tl.to(preloaderSunflowerAura, {
             scale: 1.0,
             opacity: 0.04,
-            duration: 0.85,
+            duration: 1.6,
             ease: 'power2.inOut'
         });
 
@@ -89,11 +93,11 @@ document.addEventListener('DOMContentLoaded', () => {
             targetY = logoCenterY - assemblyCenterY;
         }
 
-        // Animate preloaderAssembly scale down (scale: 0.22) & translate directly into top-left logo position
+        // Animate preloaderAssembly scale down (scale: 0.22) & translate directly into top-left logo position smoothly over 1.7s
         tl.to(preloaderBackdrop, {
             clipPath: 'inset(0% 0% 100% 0%)',
-            duration: 0.95,
-            ease: 'power4.inOut'
+            duration: 1.8,
+            ease: 'power3.inOut'
         }, "<");
 
         tl.to(preloaderAssembly, {
@@ -101,8 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
             x: targetX,
             y: targetY,
             opacity: 0,
-            duration: 0.9,
-            ease: 'power4.inOut'
+            duration: 1.7,
+            ease: 'power3.inOut'
         }, "<");
 
         // Stagger Hero Entrance
