@@ -36,44 +36,61 @@
 }
 
 /* =========================================
-   GSAP PRELOADER OVERLAY STYLES
+   CINEMATIC ASSEMBLY PRELOADER & WATERMARK
    ========================================= */
 body.is-preloading {
     overflow: hidden !important;
 }
 
-.preloader-overlay {
+.preloader-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: #0B0C10;
     z-index: 99999;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    pointer-events: none;
+}
+
+.preloader-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0B0C10;
+    z-index: 1;
+    clip-path: inset(0% 0% 0% 0%);
     pointer-events: auto;
+    transition: clip-path 0.9s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 .preloader-glow {
     position: absolute;
-    width: 550px;
-    height: 550px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, rgba(11, 12, 16, 0) 70%);
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.45) 0%, rgba(11, 12, 16, 0) 70%);
+    z-index: 2;
     pointer-events: none;
-    opacity: 0.5;
+    opacity: 0;
 }
 
-.preloader-content {
-    position: relative;
-    z-index: 2;
+.preloader-assembly {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+    transform-origin: center center;
+    pointer-events: none;
 }
 
 .preloader-mic-wrapper {
@@ -84,7 +101,7 @@ body.is-preloading {
 .preloader-mic {
     width: 90px;
     height: auto;
-    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.7));
+    filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.75));
 }
 
 .preloader-text-group {
@@ -130,6 +147,30 @@ body.is-preloading {
     background: linear-gradient(135deg, #FFE58F 0%, #D4AF37 50%, #996515 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+}
+
+/* Sunflower Geometry Background Watermark */
+.sunflower-watermark-wrapper {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85vw;
+    max-width: 950px;
+    height: auto;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.sunflower-watermark {
+    width: 100%;
+    height: 100%;
+    animation: rotateWatermark 200s linear infinite;
+}
+
+@keyframes rotateWatermark {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* =========================================
@@ -1177,26 +1218,52 @@ img {
 }
 
 /* =========================================
-   GLOWING CTAS & SHOWCASE CTA BANNER
+   REFINED LUXURY BUTTON SYSTEM (MATTE & SHIMMER)
    ========================================= */
-.btn-glow {
+.btn, .btn-glow, .btn-primary {
     position: relative;
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-    animation: goldGlowPulse 2.5s infinite alternate;
+    background: #16181E;
+    color: var(--clr-gold-light);
+    border: 1px solid rgba(212, 175, 55, 0.28);
+    border-radius: 8px;
+    padding: 0.85rem 2rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    z-index: 1;
 }
 
-@keyframes goldGlowPulse {
-    0% {
-        box-shadow: 0 0 12px rgba(212, 175, 55, 0.4), 0 0 25px rgba(212, 175, 55, 0.2);
-    }
-    100% {
-        box-shadow: 0 0 22px rgba(212, 175, 55, 0.8), 0 0 40px rgba(212, 175, 55, 0.5);
-    }
+.btn::after, .btn-glow::after, .btn-primary::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -120%;
+    width: 60%;
+    height: 200%;
+    background: linear-gradient(120deg, transparent 20%, rgba(255, 255, 255, 0.18) 50%, transparent 80%);
+    transform: rotate(25deg);
+    transition: left 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+    z-index: 2;
+    pointer-events: none;
 }
 
-.btn-glow:hover {
-    transform: translateY(-2px) scale(1.03);
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.9);
+.btn:hover::after, .btn-glow:hover::after, .btn-primary:hover::after {
+    left: 150%;
+}
+
+.btn:hover, .btn-glow:hover, .btn-primary:hover {
+    background: #1e212b;
+    border-color: rgba(212, 175, 55, 0.65);
+    color: var(--clr-white);
+    box-shadow: 0 6px 25px rgba(212, 175, 55, 0.25);
 }
 
 .showcase-cta-banner {

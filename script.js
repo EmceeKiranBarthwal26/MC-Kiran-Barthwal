@@ -4,75 +4,104 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
     // =========================================
-    // GSAP INTRO PRELOADER SEQUENCE
+    // CINEMATIC ASSEMBLY PRELOADER SEQUENCE
     // =========================================
     const preloader = document.getElementById('preloader');
-    const preloaderMic = document.querySelector('.preloader-mic') || document.querySelector('.preloader-fallback-mic');
+    const preloaderBackdrop = document.querySelector('.preloader-backdrop');
     const preloaderGlow = document.querySelector('.preloader-glow');
-    const preloaderMonogram = document.querySelector('.preloader-monogram');
-    const preloaderTitle = document.querySelector('.preloader-title');
-    const preloaderSeparator = document.querySelector('.preloader-separator');
-    const preloaderTagline = document.querySelector('.preloader-tagline');
+    const preloaderAssembly = document.getElementById('preloaderAssembly');
+    const preloaderMic = document.querySelector('.preloader-mic') || document.querySelector('.preloader-fallback-mic');
+    const preloaderTextGroup = document.getElementById('preloaderTextGroup');
 
     if (preloader && typeof gsap !== 'undefined') {
         const tl = gsap.timeline({
             onComplete: () => {
                 document.body.classList.remove('is-preloading');
-                // Trigger hero reveal
-                gsap.fromTo('.hero-title', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' });
-                gsap.fromTo('.hero-subtitle', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay: 0.15, ease: 'power3.out' });
-                gsap.fromTo('.hero-cta', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, delay: 0.3, ease: 'power3.out' });
-            }
-        });
-
-        // Set initial states
-        gsap.set([preloaderMonogram, preloaderTitle, preloaderSeparator, preloaderTagline], { opacity: 0, y: 15 });
-        gsap.set(preloaderMic, { scale: 0.95, opacity: 0.85 });
-
-        // Step 1: Microphone Pulse & Glow Pulse
-        tl.to(preloaderMic, {
-            scale: 1.08,
-            duration: 0.75,
-            repeat: 1,
-            yoyo: true,
-            ease: 'sine.inOut'
-        });
-        tl.to(preloaderGlow, {
-            opacity: 0.95,
-            scale: 1.15,
-            duration: 0.75,
-            repeat: 1,
-            yoyo: true,
-            ease: 'sine.inOut'
-        }, 0);
-
-        // Step 2: Stagger Text Reveal
-        tl.to([preloaderMonogram, preloaderTitle, preloaderSeparator, preloaderTagline], {
-            y: 0,
-            opacity: 1,
-            duration: 0.65,
-            stagger: 0.12,
-            ease: 'power3.out'
-        }, "-=0.35");
-
-        // Small hold
-        tl.to({}, { duration: 0.35 });
-
-        // Step 3: Zoom Exit & Hero Reveal
-        tl.to(preloader, {
-            scale: 2.2,
-            opacity: 0,
-            duration: 0.85,
-            ease: 'power4.inOut',
-            onComplete: () => {
                 preloader.style.display = 'none';
             }
         });
+
+        // 1. Initial Scene Setup: Mic off-screen (bottom-left)
+        gsap.set(preloaderMic, {
+            x: '-100vw',
+            y: '50vh',
+            rotation: -45,
+            opacity: 0.8
+        });
+        if (preloaderTextGroup) {
+            gsap.set(preloaderTextGroup.children, {
+                opacity: 0,
+                y: 20
+            });
+        }
+        gsap.set(preloaderGlow, {
+            opacity: 0,
+            scale: 0.2
+        });
+
+        // 2. Gold Microphone Glide In
+        tl.to(preloaderMic, {
+            x: 0,
+            y: 0,
+            rotation: 0,
+            duration: 1.15,
+            ease: 'power3.out'
+        });
+
+        // 3. Golden Bloom Flare Pulse
+        tl.to(preloaderGlow, {
+            opacity: 0.95,
+            scale: 1.4,
+            duration: 0.7,
+            ease: 'back.out(1.7)'
+        }, "-=0.3");
+
+        tl.to(preloaderGlow, {
+            opacity: 0.4,
+            scale: 1,
+            duration: 0.5,
+            ease: 'power2.inOut'
+        });
+
+        // 4. Stagger Character & Text Reveal
+        if (preloaderTextGroup) {
+            tl.to(preloaderTextGroup.children, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                stagger: 0.12,
+                ease: 'power3.out'
+            }, "-=0.6");
+        }
+
+        // Brief Cinematic Hold
+        tl.to({}, { duration: 0.35 });
+
+        // 5. Header Morph & Backdrop Uncurtain
+        tl.to(preloaderBackdrop, {
+            clipPath: 'inset(0% 0% 100% 0%)',
+            duration: 0.95,
+            ease: 'power4.inOut'
+        });
+
+        tl.to(preloaderAssembly, {
+            scale: 0.3,
+            y: '-40vh',
+            opacity: 0,
+            duration: 0.9,
+            ease: 'power4.inOut'
+        }, "<");
+
+        // Stagger Hero Entrance
+        tl.fromTo('.hero-title', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' }, "-=0.5");
+        tl.fromTo('.hero-subtitle', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, "-=0.7");
+        tl.fromTo('.hero-cta', { y: 25, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, ease: 'power3.out' }, "-=0.6");
     } else if (preloader) {
         // Fallback if GSAP CDN fails
         setTimeout(() => {
-            preloader.style.display = 'none';
+            if (preloaderBackdrop) preloaderBackdrop.style.clipPath = 'inset(0% 0% 100% 0%)';
             document.body.classList.remove('is-preloading');
+            setTimeout(() => { preloader.style.display = 'none'; }, 950);
         }, 1200);
     }
 
@@ -700,7 +729,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initWizard('inlineBookingWizard');
     initWizard('modalBookingWizard');
 
-    // Confetti Animation System
+    // Golden Sunflower Petal & Metallic Glitter Confetti System
     function triggerConfetti(canvas) {
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
@@ -708,60 +737,78 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.height = canvas.parentElement.clientHeight || 400;
 
         const particles = [];
-        const colors = ['#d4af37', '#f3e5ab', '#ffffff', '#ffd700', '#e0c068'];
+        const petalColors = ['#FFE58F', '#D4AF37', '#FFC107', '#E5A93C', '#996515'];
+        const glitterColors = ['#FFFFFF', '#FFF8DC', '#FFD700', '#F5DEB3'];
 
-        for (let i = 0; i < 60; i++) {
+        // 50 Sunflower Petals + 35 Metallic Glitter Sparkles
+        for (let i = 0; i < 85; i++) {
+            const isPetal = i < 50;
             particles.push({
+                isPetal: isPetal,
                 x: Math.random() * canvas.width,
                 y: Math.random() * canvas.height - canvas.height,
-                r: Math.random() * 6 + 3,
-                d: Math.random() * 60,
-                color: colors[Math.floor(Math.random() * colors.length)],
-                tilt: Math.floor(Math.random() * 10) - 10,
-                tiltAngleIncremental: Math.random() * 0.07 + 0.05,
-                tiltAngle: 0
+                size: isPetal ? (Math.random() * 8 + 8) : (Math.random() * 3 + 1.5),
+                color: isPetal ? petalColors[Math.floor(Math.random() * petalColors.length)] : glitterColors[Math.floor(Math.random() * glitterColors.length)],
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.09,
+                speedY: isPetal ? (Math.random() * 2 + 1.8) : (Math.random() * 1.5 + 1.2),
+                speedX: (Math.random() - 0.5) * 1.6,
+                opacity: Math.random() * 0.4 + 0.6
             });
+        }
+
+        function drawPetal(ctx, p) {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+            ctx.globalAlpha = p.opacity;
+            ctx.fillStyle = p.color;
+
+            // Teardrop Sunflower Petal Shape
+            ctx.beginPath();
+            ctx.moveTo(0, -p.size);
+            ctx.bezierCurveTo(p.size * 0.55, -p.size * 0.35, p.size * 0.55, p.size * 0.35, 0, p.size);
+            ctx.bezierCurveTo(-p.size * 0.55, p.size * 0.35, -p.size * 0.55, -p.size * 0.35, 0, -p.size);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawGlitter(ctx, p) {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.globalAlpha = p.opacity;
+            ctx.fillStyle = p.color;
+            ctx.shadowColor = p.color;
+            ctx.shadowBlur = 5;
+            ctx.beginPath();
+            ctx.arc(0, 0, p.size, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
         }
 
         let animationFrame;
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                ctx.beginPath();
-                ctx.lineWidth = p.r;
-                ctx.strokeStyle = p.color;
-                ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
-                ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
-                ctx.stroke();
-            });
-            update();
-        }
-
-        function update() {
-            particles.forEach((p, i) => {
-                p.tiltAngle += p.tiltAngleIncremental;
-                p.y += (Math.cos(p.d) + 1 + p.r / 2) / 2;
-                p.tilt = Math.sin(p.tiltAngle) * 15;
-                if (p.y > canvas.height) {
-                    particles[i] = {
-                        x: Math.random() * canvas.width,
-                        y: -10,
-                        r: p.r,
-                        d: p.d,
-                        color: p.color,
-                        tilt: p.tilt,
-                        tiltAngleIncremental: p.tiltAngleIncremental,
-                        tiltAngle: p.tiltAngle
-                    };
-                }
-            });
-        }
-
         let count = 0;
         function loop() {
-            draw();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.y += p.speedY;
+                p.x += Math.sin(count * 0.05 + p.size) * p.speedX;
+                p.rotation += p.rotationSpeed;
+
+                if (p.isPetal) {
+                    drawPetal(ctx, p);
+                } else {
+                    drawGlitter(ctx, p);
+                }
+
+                if (p.y > canvas.height + 25) {
+                    p.y = -20;
+                    p.x = Math.random() * canvas.width;
+                }
+            });
+
             count++;
-            if (count < 180) {
+            if (count < 220) {
                 animationFrame = requestAnimationFrame(loop);
             } else {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
