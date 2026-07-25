@@ -4,16 +4,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
     // =========================================
-    // LAYERED GSAP PRELOADER ASSEMBLY FLOW
+    // PIXEL-PERFECT PRELOADER ASSEMBLY SEQUENCE
     // =========================================
     const preloader = document.getElementById('preloader');
     const preloaderBackdrop = document.querySelector('.preloader-backdrop');
     const preloaderGlow = document.getElementById('preloaderGlow');
-    const preloaderSunflowerBloom = document.getElementById('preloaderSunflowerBloom');
+    const preloaderSunflowerAura = document.getElementById('preloaderSunflowerAura');
     const preloaderAssembly = document.getElementById('preloaderAssembly');
-    const preloaderMic = document.getElementById('preloaderMic');
-    const preloaderKB = document.getElementById('preloaderKB');
-    const preloaderTextBlock = document.getElementById('preloaderTextBlock');
+    const preloaderMicImg = document.getElementById('preloaderMicImg');
+    const preloaderKBImg = document.getElementById('preloaderKBImg');
+    const preloaderTextGroup = document.getElementById('preloaderTextGroup');
 
     if (preloader && typeof gsap !== 'undefined') {
         const tl = gsap.timeline({
@@ -23,79 +23,83 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Step 1 — Initial Positioning:
-        // Center KB monogram (opacity: 0, scale: 0.9)
-        // Position Mic off-screen to left (x: '-60vw', opacity: 0)
-        gsap.set(preloaderKB, { opacity: 0, scale: 0.9 });
-        gsap.set(preloaderMic, { x: '-60vw', opacity: 0, rotation: -25 });
-        gsap.set(preloaderTextBlock, { opacity: 0, y: 25 });
-        gsap.set(preloaderSunflowerBloom, { scale: 0.2, opacity: 0 });
+        // --- Phase 1: Initial State & Mic Gliding ---
+        // KB Monogram pre-positioned at center screen (opacity: 1, scale: 1)
+        // Mic starts off-screen to left (x: '-70vw', opacity: 0)
+        gsap.set(preloaderKBImg, { opacity: 1, scale: 1 });
+        gsap.set(preloaderMicImg, { x: '-70vw', opacity: 0 });
+        gsap.set(preloaderTextGroup, { opacity: 0, y: 15 });
+        gsap.set(preloaderSunflowerAura, { scale: 0.5, opacity: 0 });
         gsap.set(preloaderGlow, { opacity: 0, scale: 0.3 });
 
-        // Step 2 — Mic Entry & Positioning:
-        // Slide mic from -60vw to target position (1.2s, power4.out)
-        // Simultaneously fade in KB monogram (opacity: 1, scale: 1)
-        tl.to(preloaderMic, {
+        // Glide Mic.png along X-axis to docking position (x: 0, 1.35s, power3.out)
+        tl.to(preloaderMicImg, {
             x: 0,
             opacity: 1,
-            rotation: 0,
-            duration: 1.25,
-            ease: 'power4.out'
+            duration: 1.35,
+            ease: 'power3.out'
         });
 
-        tl.to(preloaderKB, {
+        // --- Phase 2: Docking Merge & Sunflower Aura Bloom ---
+        // At exact millisecond Mic.png docks against 'K':
+        // 1. Gold drop-shadow impact on mic & monogram
+        // 2. Reveal tagline text ("MC KIRAN BARTHWAL" & "HOSTING YOUR NEXT MEMORY", 0.4s)
+        // 3. Sunflower Bloom expands outward (scale 0.5 -> 1.3, opacity 0 -> 0.5, 0.65s, power2.out)
+        tl.to([preloaderMicImg, preloaderKBImg], {
+            filter: 'drop-shadow(0 0 30px rgba(212, 175, 55, 0.85))',
+            duration: 0.3
+        });
+
+        tl.to(preloaderTextGroup, {
             opacity: 1,
-            scale: 1,
-            duration: 0.8,
-            ease: 'power3.out'
-        }, "-=0.95");
-
-        // Step 3 — Merge & Sunflower Bloom Effect:
-        // Trigger Sunflower Bloom (scale 0.2 to 1.4, opacity fade) + gold glow flash
-        tl.to(preloaderSunflowerBloom, {
-            scale: 1.4,
-            opacity: 0.45,
-            duration: 0.65,
-            ease: 'back.out(1.7)'
-        }, "-=0.25");
-
-        tl.to(preloaderGlow, {
-            opacity: 0.9,
-            scale: 1.3,
-            duration: 0.5,
+            y: 0,
+            duration: 0.4,
             ease: 'power2.out'
         }, "<");
 
-        tl.to([preloaderSunflowerBloom, preloaderGlow], {
-            opacity: 0,
-            scale: 1.8,
-            duration: 0.55,
-            ease: 'power2.in'
+        tl.to(preloaderSunflowerAura, {
+            scale: 1.3,
+            opacity: 0.5,
+            duration: 0.65,
+            ease: 'power2.out'
+        }, "<");
+
+        // --- Phase 3: Morph Sunflower into Persistent Background Watermark & Header Morph ---
+        // Sunflower Morph: scale down from 1.3 to 1.0, fade opacity from 0.5 to 0.04 (matching background watermark!)
+        tl.to(preloaderSunflowerAura, {
+            scale: 1.0,
+            opacity: 0.04,
+            duration: 0.85,
+            ease: 'power2.inOut'
         });
 
-        // Step 4 — Tagline Reveal & Morph Transition:
-        // Fade in "MC KIRAN BARTHWAL" & "HOSTING YOUR NEXT MEMORY"
-        tl.to(preloaderTextBlock, {
-            opacity: 1,
-            y: 0,
-            duration: 0.65,
-            ease: 'power3.out'
-        }, "-=0.35");
+        // Calculate dynamic offset from screen center to top-left navbar logo (.logo-link img)
+        const navbarLogo = document.querySelector('.logo-link img') || document.querySelector('.logo-link');
+        let targetX = -window.innerWidth * 0.38;
+        let targetY = -window.innerHeight * 0.42;
 
-        // Brief Cinematic Hold
-        tl.to({}, { duration: 0.4 });
+        if (navbarLogo) {
+            const logoRect = navbarLogo.getBoundingClientRect();
+            const logoCenterX = logoRect.left + logoRect.width / 2;
+            const logoCenterY = logoRect.top + logoRect.height / 2;
+            const assemblyCenterX = window.innerWidth / 2;
+            const assemblyCenterY = window.innerHeight / 2;
 
-        // Morph Scale to Top-Left & Backdrop Uncurtain
+            targetX = logoCenterX - assemblyCenterX;
+            targetY = logoCenterY - assemblyCenterY;
+        }
+
+        // Animate preloaderAssembly scale down (scale: 0.22) & translate directly into top-left logo position
         tl.to(preloaderBackdrop, {
             clipPath: 'inset(0% 0% 100% 0%)',
             duration: 0.95,
             ease: 'power4.inOut'
-        });
+        }, "<");
 
         tl.to(preloaderAssembly, {
-            scale: 0.25,
-            y: '-42vh',
-            x: '-10vw',
+            scale: 0.22,
+            x: targetX,
+            y: targetY,
             opacity: 0,
             duration: 0.9,
             ease: 'power4.inOut'

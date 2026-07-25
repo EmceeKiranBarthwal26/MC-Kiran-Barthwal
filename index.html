@@ -16,54 +16,45 @@
 </head>
 <body class="is-preloading">
 
-    <!-- Layered GSAP Preloader -->
+    <!-- Layered GSAP Preloader Overlay -->
     <div id="preloader" class="preloader-container">
+        <!-- Layer 0: Dark Backdrop Canvas -->
         <div class="preloader-backdrop"></div>
         <div class="preloader-glow" id="preloaderGlow"></div>
         
-        <!-- Layer 3: Abstract Golden Sunflower Bloom Outline -->
-        <div class="preloader-sunflower-bloom" id="preloaderSunflowerBloom">
-            <svg viewBox="0 0 200 200" width="220" height="220">
-                <g stroke="#D4AF37" stroke-width="1.5" fill="none" opacity="0.85">
-                    <circle cx="100" cy="100" r="85" />
-                    <circle cx="100" cy="100" r="55" />
-                    <circle cx="100" cy="100" r="25" />
-                    <path d="M100,15 Q125,55 100,95 Q75,55 100,15 Z" />
-                    <path d="M100,15 Q125,55 100,95 Q75,55 100,15 Z" transform="rotate(30 100 100)" />
-                    <path d="M100,15 Q125,55 100,95 Q75,55 100,15 Z" transform="rotate(60 100 100)" />
-                    <path d="M100,15 Q125,55 100,95 Q75,55 100,15 Z" transform="rotate(90 100 100)" />
-                    <path d="M100,15 Q125,55 100,95 Q75,55 100,15 Z" transform="rotate(120 100 100)" />
-                    <path d="M100,15 Q125,55 100,95 Q75,55 100,15 Z" transform="rotate(150 100 100)" />
+        <!-- Layer 10: Sunflower Aura SVG (Morphs seamlessly into persistent background watermark) -->
+        <div class="preloader-sunflower-aura" id="preloaderSunflowerAura">
+            <svg viewBox="0 0 1000 1000" class="preloader-sunflower-svg">
+                <g stroke="#D4AF37" stroke-width="1.4" fill="none">
+                    <circle cx="500" cy="500" r="480" />
+                    <circle cx="500" cy="500" r="380" />
+                    <circle cx="500" cy="500" r="280" />
+                    <circle cx="500" cy="500" r="180" />
+                    <circle cx="500" cy="500" r="80" />
+                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" />
+                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(22.5 500 500)" />
+                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(45 500 500)" />
+                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(67.5 500 500)" />
+                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(90 500 500)" />
+                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(112.5 500 500)" />
+                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(135 500 500)" />
+                    <path d="M500,50 Q650,250 500,450 Q350,250 500,50 Z" transform="rotate(157.5 500 500)" />
                 </g>
             </svg>
         </div>
 
+        <!-- Layer 20 & 30: Monogram & Microphone Composition -->
         <div class="preloader-assembly" id="preloaderAssembly">
-            <!-- Header Row with Mic + KB Monogram side-by-side -->
-            <div class="preloader-header-row">
-                <!-- Layer 2: Gold Microphone Independent Vector Element -->
-                <div class="preloader-mic-independent" id="preloaderMic">
-                    <svg class="gold-mic-svg" viewBox="0 0 24 24" width="75" height="75">
-                        <defs>
-                            <linearGradient id="goldGradientMic" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" stop-color="#FFE58F"/>
-                                <stop offset="50%" stop-color="#D4AF37"/>
-                                <stop offset="100%" stop-color="#996515"/>
-                            </linearGradient>
-                        </defs>
-                        <path fill="url(#goldGradientMic)" d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                        <path fill="url(#goldGradientMic)" d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-                    </svg>
-                </div>
+            <div class="preloader-composition-row">
+                <!-- Layer 30: Transparent 3D Microphone PNG -->
+                <img src="Media/Mic.png" alt="Golden 3D Microphone" class="preloader-mic-png" id="preloaderMicImg">
                 
-                <!-- Layer 1: Monogram KB -->
-                <div class="preloader-monogram-standalone" id="preloaderKB">
-                    <span class="gold-text-gradient">KB</span>
-                </div>
+                <!-- Layer 20: Champagne Gold KB Monogram PNG -->
+                <img src="Media/KB.png" alt="KB Monogram" class="preloader-kb-png" id="preloaderKBImg">
             </div>
 
-            <!-- Layer 1 Text: Title & Tagline -->
-            <div class="preloader-text-block" id="preloaderTextBlock">
+            <!-- Typography & Tagline -->
+            <div class="preloader-text-group" id="preloaderTextGroup">
                 <h2 class="preloader-title">MC KIRAN <span class="gold-text-gradient">BARTHWAL</span></h2>
                 <div class="preloader-separator"></div>
                 <p class="preloader-tagline">HOSTING YOUR NEXT MEMORY</p>
@@ -96,8 +87,8 @@
     <header id="header" class="header">
         <div class="container header-container">
             <a href="#" class="logo-link">
-                <!-- Using placeholder if image fails, but pointing to the provided image -->
-                <img src="Media/Main_logo.png" alt="Kiran Barthwal Logo" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <!-- Using high-res black bg logo -->
+                <img src="Media/Logo black bg.png" alt="Kiran Barthwal Logo" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
                 <span class="logo-text" style="display:none;">KIRAN <span class="gold-text">BARTHWAL</span></span>
             </a>
             <button class="menu-toggle" aria-label="Toggle Menu">
@@ -607,7 +598,7 @@
     <footer class="footer">
         <div class="container footer-content">
              <div class="footer-logo">
-                 <img src="Media/Logo_with_tagline.png" alt="Logo" class="footer-img-logo" onerror="this.style.display='none';">
+                 <img src="Media/Logo with tagline black bg.png" alt="Kiran Barthwal Logo with Tagline" class="footer-img-logo" onerror="this.style.display='none';">
                  <h3>KIRAN <span class="gold-text">BARTHWAL</span></h3>
              </div>
              <div class="footer-social">
