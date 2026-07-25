@@ -1,36 +1,135 @@
 /* =========================================
    VARIABLES & THEME CONFIGURATION
    ========================================= */
-   :root {
+:root {
     /* Colors */
-    --clr-black: #050505;
-    --clr-dark: #121212;
-    --clr-darker: #0a0a0a;
-    --clr-light: #f5f5f5;
+    --clr-bg-dark: #0B0C10;
+    --clr-black: #0B0C10;
+    --clr-dark: #12151c;
+    --clr-darker: #08090d;
+    --clr-surface-glass: rgba(22, 24, 30, 0.75);
+    --clr-light: #e6e8ec;
     --clr-white: #ffffff;
-    --clr-gold-light: #f1db89;
-    --clr-gold: #d4af37;
-    --clr-gold-dark: #b5952f;
-    --clr-gray: #888888;
-    --clr-gray-dark: #333333;
+    --clr-gold-light: #FFE58F;
+    --clr-gold: #D4AF37;
+    --clr-gold-dark: #996515;
+    --clr-gray: #9aa0a6;
+    --clr-gray-dark: #222630;
 
     /* Gradients */
-    --grad-gold: linear-gradient(135deg, #f1db89 0%, #d4af37 50%, #b5952f 100%);
-    --grad-dark: linear-gradient(totom, rgba(5,5,5,0) 0%, rgba(5,5,5,1) 100%);
+    --grad-gold: linear-gradient(135deg, #FFE58F 0%, #D4AF37 50%, #996515 100%);
+    --grad-dark: linear-gradient(to bottom, rgba(11, 12, 16, 0) 0%, rgba(11, 12, 16, 1) 100%);
 
     /* Typography */
-    --font-heading: 'Cinzel', serif;
-    --font-body: 'Montserrat', sans-serif;
+    --font-heading: 'Playfair Display', 'Cormorant Garamond', 'Cinzel', serif;
+    --font-body: 'Plus Jakarta Sans', 'Montserrat', sans-serif;
 
     /* Transitions */
-    --trans-fast: 0.2s ease;
-    --trans-normal: 0.3s ease-in-out;
-    --trans-slow: 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --trans-fast: 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --trans-normal: 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --trans-slow: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
     
     /* Shadows */
-    --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.2);
-    --shadow-gold-hover: 0 8px 30px rgba(212, 175, 55, 0.4);
-    --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.8);
+    --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.25);
+    --shadow-gold-hover: 0 8px 30px rgba(212, 175, 55, 0.5);
+    --shadow-dark: 0 10px 40px rgba(0, 0, 0, 0.9);
+}
+
+/* =========================================
+   GSAP PRELOADER OVERLAY STYLES
+   ========================================= */
+body.is-preloading {
+    overflow: hidden !important;
+}
+
+.preloader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #0B0C10;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    pointer-events: auto;
+}
+
+.preloader-glow {
+    position: absolute;
+    width: 550px;
+    height: 550px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.4) 0%, rgba(11, 12, 16, 0) 70%);
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.preloader-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.preloader-mic-wrapper {
+    margin-bottom: 1.25rem;
+    position: relative;
+}
+
+.preloader-mic {
+    width: 90px;
+    height: auto;
+    filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.7));
+}
+
+.preloader-text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.preloader-monogram {
+    font-family: var(--font-heading);
+    font-size: 3.2rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    margin-bottom: 0.25rem;
+}
+
+.preloader-title {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    letter-spacing: 6px;
+    color: var(--clr-white);
+    text-transform: uppercase;
+}
+
+.preloader-separator {
+    width: 60px;
+    height: 2px;
+    background: var(--grad-gold);
+    margin: 0.75rem 0;
+    border-radius: 2px;
+}
+
+.preloader-tagline {
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    letter-spacing: 4px;
+    color: var(--clr-gold-light);
+    opacity: 0.9;
+    text-transform: uppercase;
+}
+
+.gold-text-gradient {
+    background: linear-gradient(135deg, #FFE58F 0%, #D4AF37 50%, #996515 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* =========================================
@@ -49,7 +148,7 @@ html {
 
 body {
     font-family: var(--font-body);
-    background-color: var(--clr-black);
+    background-color: var(--clr-bg-dark);
     color: var(--clr-light);
     line-height: 1.6;
     overflow-x: hidden;
@@ -444,11 +543,12 @@ img {
 }
 
 .service-card {
-    background: var(--clr-black);
+    background: var(--clr-surface-glass);
+    backdrop-filter: blur(16px);
     padding: 2.5rem 2rem;
-    border-radius: 8px;
+    border-radius: 12px;
     text-align: center;
-    border: 1px solid rgba(255,255,255,0.05);
+    border: 1px solid rgba(212, 175, 55, 0.15);
     transition: var(--trans-normal);
     position: relative;
     overflow: hidden;
@@ -738,9 +838,11 @@ img {
 }
 
 .testimonial-content {
-    background: var(--clr-darker);
+    background: var(--clr-surface-glass);
+    backdrop-filter: blur(16px);
     padding: 3rem;
-    border-radius: 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.15);
     border-left: 4px solid var(--clr-gold);
     box-shadow: var(--shadow-dark);
     position: relative;

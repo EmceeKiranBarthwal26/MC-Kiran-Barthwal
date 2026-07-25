@@ -3,6 +3,162 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Current Year in Footer ---
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
+    // =========================================
+    // GSAP INTRO PRELOADER SEQUENCE
+    // =========================================
+    const preloader = document.getElementById('preloader');
+    const preloaderMic = document.querySelector('.preloader-mic') || document.querySelector('.preloader-fallback-mic');
+    const preloaderGlow = document.querySelector('.preloader-glow');
+    const preloaderMonogram = document.querySelector('.preloader-monogram');
+    const preloaderTitle = document.querySelector('.preloader-title');
+    const preloaderSeparator = document.querySelector('.preloader-separator');
+    const preloaderTagline = document.querySelector('.preloader-tagline');
+
+    if (preloader && typeof gsap !== 'undefined') {
+        const tl = gsap.timeline({
+            onComplete: () => {
+                document.body.classList.remove('is-preloading');
+                // Trigger hero reveal
+                gsap.fromTo('.hero-title', { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: 'power3.out' });
+                gsap.fromTo('.hero-subtitle', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, delay: 0.15, ease: 'power3.out' });
+                gsap.fromTo('.hero-cta', { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, delay: 0.3, ease: 'power3.out' });
+            }
+        });
+
+        // Set initial states
+        gsap.set([preloaderMonogram, preloaderTitle, preloaderSeparator, preloaderTagline], { opacity: 0, y: 15 });
+        gsap.set(preloaderMic, { scale: 0.95, opacity: 0.85 });
+
+        // Step 1: Microphone Pulse & Glow Pulse
+        tl.to(preloaderMic, {
+            scale: 1.08,
+            duration: 0.75,
+            repeat: 1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        });
+        tl.to(preloaderGlow, {
+            opacity: 0.95,
+            scale: 1.15,
+            duration: 0.75,
+            repeat: 1,
+            yoyo: true,
+            ease: 'sine.inOut'
+        }, 0);
+
+        // Step 2: Stagger Text Reveal
+        tl.to([preloaderMonogram, preloaderTitle, preloaderSeparator, preloaderTagline], {
+            y: 0,
+            opacity: 1,
+            duration: 0.65,
+            stagger: 0.12,
+            ease: 'power3.out'
+        }, "-=0.35");
+
+        // Small hold
+        tl.to({}, { duration: 0.35 });
+
+        // Step 3: Zoom Exit & Hero Reveal
+        tl.to(preloader, {
+            scale: 2.2,
+            opacity: 0,
+            duration: 0.85,
+            ease: 'power4.inOut',
+            onComplete: () => {
+                preloader.style.display = 'none';
+            }
+        });
+    } else if (preloader) {
+        // Fallback if GSAP CDN fails
+        setTimeout(() => {
+            preloader.style.display = 'none';
+            document.body.classList.remove('is-preloading');
+        }, 1200);
+    }
+
+    // =========================================
+    // GSAP SCROLLTRIGGER & MAGNETIC BUTTONS
+    // =========================================
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Section Headers Slide Up Reveal
+        gsap.utils.toArray('.section-header').forEach(header => {
+            gsap.from(header, {
+                scrollTrigger: {
+                    trigger: header,
+                    start: 'top 85%',
+                    toggleActions: 'play none none none'
+                },
+                y: 35,
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.out'
+            });
+        });
+
+        // Service Cards Stagger Animation
+        const serviceCards = document.querySelectorAll('.service-card');
+        if (serviceCards.length > 0) {
+            gsap.from(serviceCards, {
+                scrollTrigger: {
+                    trigger: '.services-grid',
+                    start: 'top 80%',
+                    toggleActions: 'play none none none'
+                },
+                y: 45,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.12,
+                ease: 'power3.out'
+            });
+        }
+
+        // Showcase CTA Banner Reveal
+        const showcaseBanner = document.querySelector('.showcase-cta-banner');
+        if (showcaseBanner) {
+            gsap.from(showcaseBanner, {
+                scrollTrigger: {
+                    trigger: showcaseBanner,
+                    start: 'top 85%'
+                },
+                y: 40,
+                opacity: 0,
+                duration: 0.9,
+                ease: 'power3.out'
+            });
+        }
+    }
+
+    // Magnetic Button Cursor Feedback
+    const magneticBtns = document.querySelectorAll('.btn-glow, .btn-primary, .open-booking-modal');
+    magneticBtns.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left - rect.width / 2;
+            const mouseY = e.clientY - rect.top - rect.height / 2;
+            if (typeof gsap !== 'undefined') {
+                gsap.to(btn, {
+                    x: mouseX * 0.25,
+                    y: mouseY * 0.25,
+                    duration: 0.3,
+                    ease: 'power2.out'
+                });
+            }
+        });
+
+        btn.addEventListener('mouseleave', () => {
+            if (typeof gsap !== 'undefined') {
+                gsap.to(btn, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.6,
+                    ease: 'elastic.out(1, 0.4)'
+                });
+            }
+        });
+    });
+
     // --- Header Scroll Effect ---
     const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
