@@ -1,1 +1,17 @@
+# Dependencies & Local Data
+node_modules/
+.chrome-user-data/
+.gemini/
+.env
+.env.local
+*.log
+
+# OS Generated Files
 .DS_Store
+Thumbs.db
+
+# IDE Configuration
+.vscode/
+.idea/
+*.swp
+*.swo
