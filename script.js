@@ -285,8 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const fadeElements = document.querySelectorAll('.fade-up, .fade-left, .fade-right, .scale-in');
     
     const appearOptions = {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
+        threshold: 0.02,
+        rootMargin: "50px 0px 50px 0px"
     };
 
     const appearOnScroll = new IntersectionObserver(function(entries, observer) {
@@ -307,6 +307,11 @@ document.addEventListener('DOMContentLoaded', () => {
     fadeElements.forEach(el => {
         appearOnScroll.observe(el);
     });
+
+    // Safety fallback: Ensure all fade elements become visible if JS observer is delayed
+    setTimeout(() => {
+        fadeElements.forEach(el => el.classList.add('visible'));
+    }, 2500);
 
     // --- Numbers Counter Animation ---
     function startCounter(counterElement) {
@@ -850,35 +855,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
         loop();
-    }
-
-    // =========================================
-    // SUNFLOWER SCROLL PROGRESS INDICATOR
-    // =========================================
-    const sunflowerProgress = document.getElementById('sunflowerProgress');
-    const petals = document.querySelectorAll('.sunflower-petal');
-
-    if (sunflowerProgress && petals.length > 0) {
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            if (docHeight <= 0) return;
-            const scrollPercent = Math.min(Math.max(scrollTop / docHeight, 0), 1);
-            
-            const svgG = sunflowerProgress.querySelector('.sunflower-progress-svg g');
-            if (svgG) {
-                svgG.setAttribute('transform', `translate(50, 50) rotate(${scrollPercent * 360})`);
-            }
-
-            const activeCount = Math.floor(scrollPercent * petals.length);
-            petals.forEach((petal, idx) => {
-                if (idx <= activeCount) {
-                    petal.classList.add('active');
-                } else {
-                    petal.classList.remove('active');
-                }
-            });
-        });
     }
 
 });
