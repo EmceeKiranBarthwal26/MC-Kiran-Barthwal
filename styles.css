@@ -10,14 +10,14 @@
     --clr-surface-glass: rgba(22, 24, 30, 0.75);
     --clr-light: #e6e8ec;
     --clr-white: #ffffff;
-    --clr-gold-light: #FFE58F;
-    --clr-gold: #D4AF37;
-    --clr-gold-dark: #996515;
+    --clr-gold-light: #f7eed0;
+    --clr-gold: #f2e5b6;
+    --clr-gold-dark: #d9c896;
     --clr-gray: #9aa0a6;
     --clr-gray-dark: #222630;
 
     /* Gradients */
-    --grad-gold: linear-gradient(135deg, #FFE58F 0%, #D4AF37 50%, #996515 100%);
+    --grad-gold: linear-gradient(135deg, #FAF4E1 0%, #f2e5b6 50%, #C4B47E 100%);
     --grad-dark: linear-gradient(to bottom, rgba(11, 12, 16, 0) 0%, rgba(11, 12, 16, 1) 100%);
 
     /* Typography */
@@ -30,8 +30,8 @@
     --trans-slow: 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
     
     /* Shadows */
-    --shadow-gold: 0 4px 20px rgba(212, 175, 55, 0.25);
-    --shadow-gold-hover: 0 8px 30px rgba(212, 175, 55, 0.5);
+    --shadow-gold: 0 4px 20px rgba(242, 229, 182, 0.25);
+    --shadow-gold-hover: 0 8px 30px rgba(242, 229, 182, 0.5);
     --shadow-dark: 0 10px 40px rgba(0, 0, 0, 0.9);
 }
 
@@ -73,15 +73,6 @@ body.is-preloading {
     width: 600px;
     height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(212, 175, 55, 0.45) 0%, rgba(11, 12, 16, 0) 70%);
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0;
-}
-
-.preloader-assembly {
-    position: fixed;
-    top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 3;
@@ -448,9 +439,20 @@ img {
     align-items: center;
 }
 
+.logo-link {
+    flex-shrink: 0;
+    min-width: 140px;
+    display: flex;
+    align-items: center;
+}
+
 .logo {
-    height: 50px;
+    height: 46px;
+    max-height: 46px;
     width: auto;
+    max-width: 180px;
+    flex-shrink: 0;
+    object-fit: contain;
 }
 
 .logo-text {
